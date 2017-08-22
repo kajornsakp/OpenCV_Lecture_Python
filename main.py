@@ -60,3 +60,24 @@ import numpy
 
 
 #histogram
+def getHist(img):
+    hist = numpy.zeros(256,numpy.uint32)
+    rows,cols = img.shape
+    for r in range(rows):
+        for c in range(cols):
+            hist[img[r,c]] += 1
+    return hist
+
+def drawHist(hist):
+    histImg = numpy.full((256,256),255,numpy.uint8)
+    max = hist.max()
+    for z in range(256):
+        height = int(hist[z]*256/max)
+        cv2.line(histImg,(z,256),(z,256-height),0)
+    return histImg
+
+img = cv2.imread("a.png",cv2.IMREAD_GRAYSCALE)
+img = cv2.resize(img,(0,0),fx=0.2,fy=0.2)
+cv2.imshow("input",img)
+cv2.imshow("output",drawHist(getHist(img)))
+cv2.waitKey()
