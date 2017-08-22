@@ -29,19 +29,34 @@ import numpy
 
 
 #week 2
+#
+# img = cv2.imread("a.png")
+# img = cv2.resize(img,(0,0),fx=0.2,fy=0.2)
+# out = numpy.zeros((img.shape[0],img.shape[1])).astype(numpy.uint8)
+# cv2.namedWindow("window",cv2.WINDOW_AUTOSIZE)
+# blue = img[::,0]
+# green = img[::,1]
+# red = img[::,2]
+# for i in range(0,img.shape[0]):
+#     for j in range(0,img.shape[1]):
+#         out[(i,j)] = (0.114*img[(i,j)][0]+0.587*img[(i,j)][1]+0.299*img[(i,j)][2])
+#
+#
+#
+# cv2.imshow("Window",out)
+# cv2.waitKey()
 
-img = cv2.imread("a.png")
-img = cv2.resize(img,(0,0),fx=0.2,fy=0.2)
-out = numpy.zeros((img.shape[0],img.shape[1])).astype(numpy.uint8)
-cv2.namedWindow("window",cv2.WINDOW_AUTOSIZE)
-blue = img[::,0]
-green = img[::,1]
-red = img[::,2]
-for i in range(0,img.shape[0]):
-    for j in range(0,img.shape[1]):
-        out[(i,j)] = (0.114*img[(i,j)][0]+0.587*img[(i,j)][1]+0.299*img[(i,j)][2])
+
+# lut = numpy.ndarray(256,numpy.uint8)
+# for i in range(lut.size):
+#     lut[i] = 255-i;
+#
+# img = cv2.imread("a.png")
+# img = cv2.resize(img,(0,0),fx=0.2,fy=0.2)
+# out = cv2.LUT(img,lut)
+# cv2.imshow("window",out)
+# cv2.waitKey()
 
 
 
-cv2.imshow("Window",out)
-cv2.waitKey()
+#histogram
