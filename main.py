@@ -1,6 +1,7 @@
 import cv2
 import numpy
 
+
 # week1
 # print(cv2.__version__)
 # img = cv2.imread("a.png",cv2.IMREAD_COLOR)
@@ -28,7 +29,7 @@ import numpy
 
 
 
-#week 2
+# week 2
 #
 # img = cv2.imread("a.png")
 # img = cv2.resize(img,(0,0),fx=0.2,fy=0.2)
@@ -59,25 +60,55 @@ import numpy
 
 
 
-#histogram
-def getHist(img):
-    hist = numpy.zeros(256,numpy.uint32)
-    rows,cols = img.shape
-    for r in range(rows):
-        for c in range(cols):
-            hist[img[r,c]] += 1
-    return hist
+# histogram
+# def getHist(img):
+#     hist = numpy.zeros(256,numpy.uint32)
+#     rows,cols = img.shape
+#     for r in range(rows):
+#         for c in range(cols):
+#             hist[img[r,c]] += 1
+#     return hist
+#
+# def drawHist(hist):
+#     histImg = numpy.full((256,256),255,numpy.uint8)
+#     max = hist.max()
+#     for z in range(256):
+#         height = int(hist[z]*256/max)
+#         cv2.line(histImg,(z,256),(z,256-height),0)
+#     return histImg
+#
+# img = cv2.imread("a.png",cv2.IMREAD_GRAYSCALE)
+# img = cv2.resize(img,(0,0),fx=0.2,fy=0.2)
+# cv2.imshow("input",img)
+# cv2.imshow("output",drawHist(getHist(img)))
+# cv2.waitKey()
 
-def drawHist(hist):
-    histImg = numpy.full((256,256),255,numpy.uint8)
-    max = hist.max()
-    for z in range(256):
-        height = int(hist[z]*256/max)
-        cv2.line(histImg,(z,256),(z,256-height),0)
-    return histImg
 
-img = cv2.imread("a.png",cv2.IMREAD_GRAYSCALE)
+def contrastStretchLUT(pt1, pt2):
+    lut = numpy.ndarray(256, numpy.uint8)
+    m1 = pt1[1] / pt1[0]
+    m2 = (pt2[1] - pt1[1]) / (pt2[0] - pt1[0])
+    m3 = (255 - pt2[1]) / (255 - pt2[0])
+    i = 0
+    while i < pt1[0]:
+        lut[i] = int(m1 * i)
+    i += 1
+    while i < pt2[0]:
+        lut[i] = int(m2 * (i - pt1[0]) + pt1[1])
+    i += 1
+    while i < 256:
+        lut[i] = int(m3 * (i - pt2[0]) + pt2[1])
+    i += 1
+    return lut
+
+
+img = cv2.imread("a.png", cv2.IMREAD_GRAYSCALE)
 img = cv2.resize(img,(0,0),fx=0.2,fy=0.2)
-cv2.imshow("input",img)
-cv2.imshow("output",drawHist(getHist(img)))
+
+# lut = contrastStretchLUT((80,40), (175,215))
+# outImg = cv2.LUT(img, lut)
+outImg = cv2.equalizeHist(img)
+cv2.imshow("Input image", img)
+cv2.imshow("Processed image", outImg)
 cv2.waitKey()
+cv2.destroyAllWindows()
