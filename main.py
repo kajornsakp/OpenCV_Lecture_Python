@@ -1,5 +1,7 @@
+from itertools import chain
+
 import cv2
-import numpy
+import numpy as np
 
 
 # week1
@@ -102,13 +104,146 @@ def contrastStretchLUT(pt1, pt2):
     return lut
 
 
-img = cv2.imread("a.png", cv2.IMREAD_GRAYSCALE)
-img = cv2.resize(img,(0,0),fx=0.2,fy=0.2)
+# img = cv2.imread("b.jpg", cv2.IMREAD_COLOR)
+# img = cv2.resize(img,(0,0),fx=0.3,fy=0.3)
 
 # lut = contrastStretchLUT((80,40), (175,215))
 # outImg = cv2.LUT(img, lut)
-outImg = cv2.equalizeHist(img)
-cv2.imshow("Input image", img)
-cv2.imshow("Processed image", outImg)
+# outImg = cv2.equalizeHist(img)
+# outImg = cv2.GaussianBlur(img,(5,5),0)
+#
+# cv2.imshow("Input image", img)
+# cv2.imshow("Processed image", outImg)
+# cv2.waitKey()
+#
+# cv2.destroyAllWindows()
+
+
+# for s in range(3,31,2):
+#     print("filter size = ",s)
+#     outImg = cv2.boxFilter(img,-1,(s,s))
+#     cv2.imshow("processed image",outImg)
+#     cv2.waitKey()
+
+# cv2.imshow("Input image", img)
+#
+# for s in range(3,31,2):
+#     print("filter size = ",s)
+#     outImg = cv2.GaussianBlur(img,(s,s),0)
+#     cv2.imshow("processed image",outImg)
+#     cv2.waitKey()
+
+#
+# for sig in range(1,9):
+#     print("sigma value = ",sig)
+#     outImg = cv2.GaussianBlur(img,(31,31),sig)
+#     cv2.imshow("processed image",outImg)
+#     cv2.waitKey()
+
+
+# img = cv2.imread("b.jpg", cv2.IMREAD_COLOR)
+# # img = cv2.resize(img,(0,0),fx=0.5,fy=0.5)
+# outImg = cv2.Laplacian(img,cv2.CV_16S,3)
+# cv2.imshow("Input image",img)
+# cv2.imshow("Output image",outImg)
+# # print(outImg)
+# outImg += 128
+# # print(outImg)
+# outImg = np.uint8(outImg)
+# cv2.imshow("Add 128",outImg)
+# cv2.waitKey()
+#
+# print(cv2.__version__)
+
+#
+# img = cv2.imread("b.jpg", cv2.IMREAD_GRAYSCALE)
+# highpass = np.ones((3,3),np.uint8)*-1
+# highpass[1,1] = 8
+# print(highpass)
+# outImg = cv2.filter2D(img,cv2.CV_8U,highpass)
+# shpImg = cv2.addWeighted(img, 0.8, outImg, 0.2, 0)
+# cv2.imshow("in",img)
+# cv2.imshow("out",outImg)
+# cv2.imshow("sharp",shpImg)
+# cv2.waitKey()
+
+
+# img = cv2.imread("b.jpg", cv2.IMREAD_COLOR)
+# outImg = cv2.bilateralFilter(img,11,200,30)
+# cv2.imshow("input",img)
+# cv2.imshow("output",outImg)
+# cv2.waitKey()
+
+
+#
+# def LoGFilter(img, ksize):
+#     print(img)
+#     blurImg = cv2.GaussianBlur(img, ksize, 0)
+#     print("blur")
+#     print(blurImg)
+#     logImg = cv2.Laplacian(blurImg, cv2.CV_16S, 3)
+#     print(logImg)
+#     return logImg
+#
+#
+# def zeroCrossing(img):
+#     cv2.imshow("in image", img)
+#     print(img)
+#     outImg = np.zeros(img.shape, np.uint8)
+#     TH = 5
+#     rows, cols = img.shape
+#     for r in range(1, rows - 1):
+#         for c in range(1, cols - 1):
+#             n = img[r - 1, c]
+#             s = img[r + 1, c]
+#             e = img[r, c + 1]
+#             w = img[r, c - 1]
+#             ne = img[r - 1, c + 1]
+#             nw = img[r - 1, c - 1]
+#             se = img[r + 1, c + 1]
+#             sw = img[r + 1, c - 1]
+#             if ((n * s) < 0 and abs(n - s) > TH) or \
+#                     ((e * w) < 0 and abs(e - w) > TH) or \
+#                     ((ne * sw) < 0 and abs(ne - sw) > TH) or \
+#                     ((nw * se) < 0 and abs(nw - se) > TH):
+#                 outImg[r, c] = 255
+#     return outImg
+#
+#
+# img = cv2.imread("b.jpg", cv2.IMREAD_GRAYSCALE)
+# # img = cv2.resize(img,(0,0),fx=0.3,fy=0.3)
+#
+# logImg = LoGFilter(img, (9, 9))
+# edgeImg = zeroCrossing(logImg)
+# cv2.imshow("log",logImg)
+# cv2.imshow("Input image", img)
+# cv2.imshow("Edge image", edgeImg)
+# cv2.waitKey()
+# cv2.destroyAllWindows()
+
+#
+# img = cv2.imread("1001.jpg", cv2.IMREAD_GRAYSCALE)
+# blurImg = cv2.GaussianBlur(img, (9,9), 0)
+# edgeImg = cv2.Canny(blurImg, 50, 100)
+# cv2.imshow("Input image", img)
+# cv2.imshow("Edge image", edgeImg)
+# cv2.waitKey()
+# cv2.destroyAllWindows()
+
+
+winName = "Canny"
+img = cv2.imread("1001.jpg", cv2.IMREAD_GRAYSCALE)
+img = cv2.resize(img,(0,0),fx=0.5,fy=0.5)
+
+def CannyThreshold(lth):
+    blurImg = cv2.GaussianBlur(img, (9,9), 0)
+    edgeImg = cv2.Canny(blurImg, lth, 2 * lth)
+    cv2.imshow(winName, edgeImg)
+
+lowTh = 0
+maxLowTh = 100
+cv2.namedWindow(winName, cv2.WINDOW_AUTOSIZE)
+cv2.createTrackbar("Min threshold", winName, lowTh, maxLowTh, CannyThreshold)
+CannyThreshold(lowTh)
 cv2.waitKey()
 cv2.destroyAllWindows()
